@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 10 firma oluştur
+        Company::factory(10)->create()->each(function ($company) {
+            // Her firma için 3-7 arası kullanıcı oluştur
+            User::factory(rand(3, 7))
+                ->turkish() // Türkçe isimler
+                ->create([
+                    'company_id' => $company->id
+                ]);
+        });
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->command->info(Company::count() . ' firma oluşturuldu!');
+        $this->command->info(User::count() . ' kullanıcı oluşturuldu!');
     }
 }
