@@ -13,11 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 10 firma oluştur
         Company::factory(10)->create()->each(function ($company) {
-            // Her firma için 3-7 arası kullanıcı oluştur
             User::factory(rand(3, 7))
-                ->turkish() // Türkçe isimler
+                ->turkish()
                 ->create([
                     'company_id' => $company->id
                 ]);
